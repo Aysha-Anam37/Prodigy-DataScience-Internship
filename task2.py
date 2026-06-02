@@ -1,0 +1,43 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+df = pd.read_csv("Titanic.csv", sep='\t')
+print(df.head())
+print(df.info())
+print(df.isnull().sum())
+print(df.shape)
+print(df.columns)
+
+print(df.groupby('sex')['survived'].mean())
+plt.figure(figsize=(5,5))
+df.groupby('sex')['survived'].mean().plot(kind='bar', color=['lightpink', 'lightblue'], edgecolor='black')
+plt.title('Survival Rate by Gender')
+plt.xlabel('Gender')
+plt.ylabel('Survival Rate')
+plt.savefig("survival_rate.png", dpi=300, bbox_inches='tight')
+plt.show()
+
+plt.figure(figsize=(5,5))
+df.groupby('pclass')['survived'].mean().plot(kind='bar',color='lightgrey',edgecolor='black')
+plt.title('Survival Rate by Passenger Class')
+plt.xlabel('Passenger Class')
+plt.ylabel('Survival Rate')
+plt.savefig("passenger_survival.png", dpi=300, bbox_inches='tight')
+plt.show()
+
+df['Age Group'] = pd.cut(df['age'],bins=[0, 12, 19, 35, 60, 100],
+labels=['Child', 'Teen', 'Young Adult', 'Adult', 'Senior'])
+plt.figure(figsize=(10,6))
+df.groupby('Age Group')['fare'].mean().plot(kind='bar',color='lavender',edgecolor='purple')
+plt.title('Average Fare Paid by Age Group')
+plt.xlabel('Age Group')
+plt.ylabel('Average Fare')
+plt.savefig("average_fare.png", dpi=300, bbox_inches='tight')
+plt.show()
+
+plt.figure(figsize=(10,6))
+plt.hist(df['age'],bins=20,color='purple',edgecolor='lavender')
+plt.title('Age Distribution of Passengers')
+plt.xlabel('Age')
+plt.ylabel('Frequency')
+plt.savefig("age_distribution.png", dpi=300, bbox_inches='tight')
+plt.show()
